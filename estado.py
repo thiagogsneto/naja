@@ -1,3 +1,4 @@
+#
 def confere(tipo, entrada):
 	if tipo == "minusculo":
 		return "a" <= entrada <= "z"
