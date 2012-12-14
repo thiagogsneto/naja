@@ -1,4 +1,3 @@
-#
 def confere(tipo, entrada):
 	if tipo == "minusculo":
 		return "a" <= entrada <= "z"
@@ -22,28 +21,35 @@ class Estado:
 	def set_transicoes(self, transicoes):
 		self.transicoes = transicoes
 	
-	def	final(self):
+	def	fim(self):
 		return self.final
 		
 	def get_proximo(self, entrada):
 		for tipo in self.transicoes.keys():
 			if confere(tipo, entrada):
-				print tipo,"->",str(self.transicoes[tipo])
+				#print tipo,"->",str(self.transicoes[tipo])
 				return self.transicoes[tipo]
 		
 		if "outro" in self.transicoes.keys():
-				print "outro","->",str(self.transicoes["outro"])
+				#print "outro","->",str(self.transicoes["outro"])
 				return self.transicoes["outro"]
 			
 		print "erro"
 
 class Automato:
 	
-	def __init__(self, estados, inicial):
+	def __init__(self, nome, estados, inicial):
 		self.estados = estados
 		self.inicial = inicial
 		self.atual = inicial
+		self.nome = nome
 
+	def __str__(self):
+		return str(self.atual)
+		
+	def get_nome(self):
+		return self.nome
+	
 	def inicializa(self):
 		self.atual = self.inicial
 
@@ -54,27 +60,18 @@ class Automato:
 		self.atual = self.atual.get_proximo(entrada)
 		
 	def fim(self):
-		return self.atual.final()
+		return self.atual.fim()
 
 
-#-------------------------- COMENTARIO
-estados = []
-estados.append(Estado("q0", False))
-estados.append(Estado("q1", False))
-estados.append(Estado("q2", True))
+if __name__ == "__main__":
+	estados = []
+	estados.append(Estado("q0", False))
+	estados.append(Estado("q1", False))
+	estados.append(Estado("q2", True))
 
-estados[0].set_transicoes({"#": estados[1]})
-estados[1].set_transicoes({"\n": estados[2],"outro":estados[1]})
+	estados[0].set_transicoes({"#": estados[1]})
+	estados[1].set_transicoes({"\n": estados[2],"outro":estados[1]})
 
-automato = Automato(estados, estados[0])
-#automatos["comentario"] = Automato(estados, estados[0])
+	automato = Automato(estados, estados[0])
+	#automatos["comentario"] = Automato(estados, estados[0])
 
-arquivo = open("entrada.txt", "r")
-
-for linha in arquivo.readlines():
-	if linha == "fim":
-		break
-		
-	for entrada in linha:
-		automato.proximo(entrada)
-	automato.inicializa()
